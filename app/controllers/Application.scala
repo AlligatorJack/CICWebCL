@@ -6,8 +6,8 @@ import cmd.partial.PartialCmdParser
 
 object Application extends Controller {
   
-  def index = Action {
-    Ok(views.html.index("Your new application is ready."))
+  def index(bla: String) = Action {
+    Ok(views.html.index.render("Your new application is super ready."+bla, 5))
   }
   
 }
