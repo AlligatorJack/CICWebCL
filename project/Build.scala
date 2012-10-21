@@ -4,19 +4,16 @@ import PlayProject._
 
 object ApplicationBuild extends Build {
 
-/*	lazy val cicWebCl = Project(id = "CICWebCL", base = file("D:/Studium/Projekte/Webanwendungen/Workspace/CICWebCL")) dependsOn(cic)
+  val appName         = "CICWebCL"
+  val appVersion      = "1.0-SNAPSHOT"
 
-	lazy val cic = Project(id = "CIC-Project", base = file("D:/Studium/Projekte/Webanwendungen/Workspace/CIC"))*/
+  val appDependencies = Seq(
+    // Add your project dependencies here,
+  )
 
-    val appName         = "CICWebCL"
-    val appVersion      = "1.0-SNAPSHOT"
+  lazy val main = PlayProject(appName, appVersion, appDependencies, mainLang = SCALA).settings(
+    // Add your own project settings here      
+  ).dependsOn(cic)
 
-    val appDependencies = Seq(
-      // Add your project dependencies here,
-    )
-
-    val main = PlayProject(appName, appVersion, appDependencies, mainLang = SCALA).settings(
-      // Add your own project settings here      
-    )
-
+  lazy val cic = RootProject(file("../CIC"))
 }
