@@ -25,11 +25,11 @@ object Application extends Controller {
     //ToDo: implement other cases
   }
   
-  def paintParams(ap: Seq[AST.Expr], np: Seq[PAST.NParam]) = (ap.length, np.length) match {
-    case (0, 0) => "" 
-    case (0, _) => paintNParams(np)
-    case (_, 0) => paintAParams(ap)
-    case (_, _) => paintAParams(ap) + "," + paintNParams(np)
+  def paintParams(ap: Seq[AST.Expr], np: Seq[PAST.NParam]) = (ap.isEmpty, np.isEmpty) match {
+    case (false, false) => paintAParams(ap) + "," + paintNParams(np)
+    case (false, true)  => paintAParams(ap)
+    case (true, false)  => paintNParams(np)
+    case (true, true)   => "" 
   }
   
   def paintAParams(ap: Seq[AST.Expr]): String = ap match {
