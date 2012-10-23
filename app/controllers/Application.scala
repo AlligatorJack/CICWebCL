@@ -9,42 +9,57 @@ import cmd.ast.Expr
 import cmd.{ast => AST}
 import cmd.partial.{ast => PAST}
 import play.api.templates.Html
+import scala.xml._
 
 object Application extends Controller {
   
-  def index(bla: String) = Action {
-    val expr = new PartialCmdParser().parse(new PartialCmdLexer(new StringReader(bla))).asInstanceOf[Expr]
-    Ok(views.html.index.render("Your application is super ready", 5, Html(paint(expr))))
+  def index = Action {
+    Ok(views.html.index.render("Your application is super ready", 5, Html("")))
   }
   
-  def paint(s: AST.Symbol): String = s match {
-    case AST.Ref(id) => paint(id)
-    case AST.Ident(name) => "" + <span class="cname">{name}</span>
-    case PAST.CApp(id, pl) => paint(id) + "(" + paint(pl)
-    case PAST.ParamList(ap, np, isClosed) => paintParams(ap, np) + paintBool(isClosed)
-    //ToDo: implement other cases
+  def string(s: String)= Action {
+    val expr = new PartialCmdParser().parse(new PartialCmdLexer(new StringReader(s))).asInstanceOf[Expr]
+    Ok(views.html.test.render(colorize(expr)))
   }
   
-  def paintParams(ap: Seq[AST.Expr], np: Seq[PAST.NParam]) = (ap.isEmpty, np.isEmpty) match {
-    case (false, false) => paintAParams(ap) + "," + paintNParams(np)
-    case (false, true)  => paintAParams(ap)
-    case (true, false)  => paintNParams(np)
-    case (true, true)   => "" 
+  def colorize(s: AST.Symbol): NodeSeq = s match {
+    case AST.Ref(AST.Ident(name))              => Seq(<span class="vname">{name}</span>)
+    case PAST.CApp(AST.Ident(name), pl)        => Seq(<span class="cname">{name}</span>, Text("(")) ++ colorize(pl)
+    case PAST.ParamList(ap, np, isClosed)      => colorizeParams(ap, np) ++ (if(isClosed) Seq(Text(")")) else Seq())
+    case PAST.NParamWithEqual(AST.Ident(name)) => Seq(<span class="pname">{name}</span>, Text(" = "))
+    case PAST.NParamNoEqual(AST.Ident(name))   => Seq(<span class="pname">{name}</span>)
+    case PAST.NParam_(AST.Ident(name), v)      => Seq(<span class="pname">{name}</span>, Text(" = ")) ++ colorize(v)
+    case PAST.MissingElem()                    => Seq() 
+    case AST.Integer(v)                        => Seq(<span class="integer">{v}</span>)
+    case AST.Float(v)                          => Seq(<span class="float">{v}</span>)
+    case AST.String(v)                         => Seq(<span class="string">{v}</span>)
+    case AST.Bool(v)                           => Seq(<span class="boolean">{v}</span>)
+    case AST.Seq(seq)                          => Seq(Text("[")) ++ splitSeq(seq, ",") ++ Seq(Text("]"))
+    case PAST.LocalValDefsNoIn(defs)           => Seq(<span class="keyword">let</span>, Text(" ")) ++ splitSeq(defs, ";")
+    case PAST.LocalValDefsWithIn(defs)         => colorize(PAST.LocalValDefsNoIn(defs)) ++ Seq(Text(" "), <span class="keyword">in</span>)
+    case PAST.LocalValDefs(defs, expr)         => colorize(PAST.LocalValDefsWithIn(defs)) ++ colorize(expr)   
+    case PAST.ValDefNoEqual(AST.Ident(name))   => Seq(<span class="vname">{name}</span>) 
+    case PAST.ValDefWithEqual(AST.Ident(name)) => Seq(<span class="vname">{name}</span>, Text(" = "))
+    case PAST.ValDef_(AST.Ident(name), expr)   => Seq(<span class="vname">{name}</span>, Text(" = ")) ++ colorize(expr)
   }
   
-  def paintAParams(ap: Seq[AST.Expr]): String = ap match {
-    case a::ap if ap.isEmpty => paint(a)
-    case a::ap => paint(a) + "," + paintAParams(ap)
+  def colorizeParams(ap: Seq[AST.Expr], np: Seq[PAST.NParam]): NodeSeq = (ap, np) match {
+    case (Seq(), Seq()) => Seq()
+    case (Seq(), _)     => colorizeNParams(np)
+    case (_, Seq())     => splitSeq(ap, ",") 
+    case (_, _)         => splitSeq(ap, ",") ++ Seq(Text(", ")) ++ colorizeNParams(np)
   }
   
-  def paintNParams(np: Seq[PAST.NParam]): String = np match {
-    case n::np if np.isEmpty => paint(n)
-    case n::np => paint(n) + "," + paintNParams(np)
+  def splitSeq(seq: Seq[AST.Symbol], splitter: String): NodeSeq = seq match {
+    case Seq() => Seq()
+    case s::ss if ss.isEmpty => colorize(s)
+    case s::ss => colorize(s) ++ Seq(Text(splitter + " ")) ++ splitSeq(ss, splitter)
   }
   
-  def paintBool(b: Boolean) = b match {
-    case true  => ")"
-    case false => ""  
+  def colorizeNParams(np: Seq[PAST.NParam]): NodeSeq = np match {
+    case Seq() => Seq()
+    case n::np if np.isEmpty => colorize(n)
+    case n::np => colorize(n) ++ Seq(Text(", ")) ++ colorizeNParams(np)
   }
   
 }
