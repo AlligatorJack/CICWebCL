@@ -1,3 +1,8 @@
 #cli {
 	border: 1px dotted black;
 }
+
+.keyword {color: #8B0000;}
+.vname {color: #6495ED;}
+.cname {color: #00008B;}
+.pname {color: #008000;}
