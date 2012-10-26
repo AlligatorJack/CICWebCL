@@ -1,9 +1,28 @@
-@(seq: scala.xml.NodeSeq)
-
+<head>
 <link type="text/css" rel="stylesheet" href="@routes.Assets.at("public/stylesheets/main.css")">
-
-@main("Welcome to Play 2.0") {
-    
-    @seq
-    
+<!-- <script type="text/javascript" src='@routes.Application.javascriptRoutes()'>
+function colorize(str)
+{
+	myJsRoutes.controllers.Application.stringAs(str).ajax({
+	    success : function(data) { document.getElementById("txtHint").innerHTML=xmlhttp.responseText; }
+	});
 }
+</script> -->
+<script>
+function colorize(str)
+{
+	document.getElementById("txtHint").innerHTML=str
+}
+</script>
+</head> 
+
+<html>
+<body>
+
+<form action=""> 
+Uncolored: <input type="text" id="txt1" size=50 onkeyup="colorize(this.value)" />
+</form>
+<p>Colored: <span id="txtHint"></span></p> 
+
+</body>
+</html> 

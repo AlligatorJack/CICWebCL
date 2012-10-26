@@ -10,16 +10,29 @@ import cmd.{ast => AST}
 import cmd.partial.{ast => PAST}
 import play.api.templates.Html
 import scala.xml._
+import play.api.libs.iteratee.Enumerator
 
 object Application extends Controller {
   
   def index = Action {
-    Ok(views.html.index.render("Your application is super ready", 5, Html("")))
+    Ok(views.html.test.render())
   }
   
-  def string(s: String)= Action {
-    val expr = new PartialCmdParser().parse(new PartialCmdLexer(new StringReader(s))).asInstanceOf[Expr]
-    Ok(views.html.test.render(colorize(expr)))
+//  def string(s: String)= Action {
+//    val expr = new PartialCmdParser().parse(new PartialCmdLexer(new StringReader(s))).asInstanceOf[Expr]
+//    Ok(views.html.test.render(colorize(expr)))
+//  }
+  
+  def stringAs(s: String) = Action {
+    Ok(colorize(new PartialCmdParser().parse(new PartialCmdLexer(new StringReader(s))).asInstanceOf[Expr]))
+  }
+  
+  def javascriptRoutes = Action { implicit request =>
+    Ok(
+      Routes.javascriptRouter("jsRoutes")(
+          routes.javascript.Application.stringAs        
+      )
+    ).as("text/javascript") 
   }
   
   def colorize(s: AST.Symbol): NodeSeq = s match {
