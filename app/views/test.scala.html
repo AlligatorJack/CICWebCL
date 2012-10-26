@@ -5,9 +5,12 @@
 <script>
 function colorize(str)
 {
-	jsRoutes.controllers.Application.stringAs(str).ajax({
-	    success : function(data) { document.getElementById("txtHint").innerHTML=data; }
-	});
+	if (str.length == 0) {document.getElementById("txtHint").innerHTML=""}
+	else {
+		jsRoutes.controllers.Application.colorizeString(str).ajax({
+		    success : function(data) { document.getElementById("txtHint").innerHTML=data; }
+		});
+	}
 }
 </script>
 </head> 
@@ -16,7 +19,7 @@ function colorize(str)
 <body>
 
 <form action=""> 
-Uncolored: <input type="text" id="txt1" size=50 onkeyup="colorize(this.value)" />
+Uncolored: <input type="text" id="txt1" size=50 onkeyup="colorize(this.value)"/>
 </form>
 <p>Colored: <span id="txtHint"></span></p> 
 
