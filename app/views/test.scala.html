@@ -6,7 +6,7 @@
 function colorize(str)
 {
 	jsRoutes.controllers.Application.stringAs(str).ajax({
-	    success : function(data) { document.getElementById("txtHint").innerHTML=xmlhttp.responseText; }
+	    success : function(data) { document.getElementById("txtHint").innerHTML=data; }
 	});
 }
 </script>

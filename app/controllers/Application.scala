@@ -24,7 +24,7 @@ object Application extends Controller {
 //  }
   
   def stringAs(s: String) = Action {
-    Ok(colorize(new PartialCmdParser().parse(new PartialCmdLexer(new StringReader(s))).asInstanceOf[Expr]))
+    Ok(colorize(new PartialCmdParser().parse(new PartialCmdLexer(new StringReader(s))).asInstanceOf[Expr]).toString)
   }
   
   def javascriptRoutes = Action { implicit request =>
