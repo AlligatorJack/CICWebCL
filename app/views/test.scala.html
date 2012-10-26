@@ -1,6 +1,7 @@
 <head>
 <link type="text/css" rel="stylesheet" href="@routes.Assets.at("stylesheets/main.css")">
-<script type="text/javascript" src='@routes.Application.javascriptRoutes()'>
+<script type="text/javascript" src='@routes.Application.javascriptRoutes()'></script>
+<script>
 function colorize(str)
 {
 	myJsRoutes.controllers.Application.stringAs(str).ajax({
@@ -8,12 +9,6 @@ function colorize(str)
 	});
 }
 </script>
-<!-- <script>
-function colorize(str)
-{
-	document.getElementById("txtHint").innerHTML=str
-}
-</script> -->
 </head> 
 
 <html>
