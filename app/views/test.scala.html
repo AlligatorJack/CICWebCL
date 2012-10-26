@@ -1,10 +1,11 @@
 <head>
 <link type="text/css" rel="stylesheet" href="@routes.Assets.at("stylesheets/main.css")">
+<script src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")" type="text/javascript"></script>
 <script type="text/javascript" src='@routes.Application.javascriptRoutes()'></script>
 <script>
 function colorize(str)
 {
-	myJsRoutes.controllers.Application.stringAs(str).ajax({
+	jsRoutes.controllers.Application.stringAs(str).ajax({
 	    success : function(data) { document.getElementById("txtHint").innerHTML=xmlhttp.responseText; }
 	});
 }
