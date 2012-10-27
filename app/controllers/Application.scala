@@ -15,9 +15,10 @@ import scala.util.regexp.SyntaxError
 object Application extends Controller {
   
   def index = Action {
-    Ok(views.html.test.render())
+    OK(views.html.WebCLI.render())
+    //Ok(views.html.test.render())
   }
-  
+
   def colorizeString(s: String)= Action {
     val lexer = new PartialCmdLexer(new StringReader(s))
     try {
