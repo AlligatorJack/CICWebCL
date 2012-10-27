@@ -15,7 +15,7 @@ import scala.util.regexp.SyntaxError
 object Application extends Controller {
   
   def index = Action {
-    OK(views.html.WebCLI.render())
+    Ok(views.html.WebCLI.render())
     //Ok(views.html.test.render())
   }
 
