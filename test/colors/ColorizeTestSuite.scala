@@ -163,5 +163,4 @@ class ColorizeTestSuite extends FunSuite {
   test("Parse \"" + testCase25 + "\"") {
     println(colorizeExpr(parse(testCase25)))
   }
-
 }
