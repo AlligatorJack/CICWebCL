@@ -1,33 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+
 <html>
 <head>
 	<title>CIC-Web Command Line</title>
 
-<!--
- 	<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
-    <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+	<!-- CSS, Icon -->
+ 	<link type="text/css" rel="stylesheet" href="@routes.Assets.at("stylesheets/main.css")">
+    <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/it.png")">
+
+    <!-- jQuery -->
     <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")"></script>
 
-	<script type="text/javascript" src="@routes.Assets.at("javascripts/rangy-1.2.3/rangy-core.js")"></script>
+    <!-- Rangy  -->
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/rangy-1.2.3/rangy-core.js")"></script>
 	<script type="text/javascript" src="@routes.Assets.at("javascripts/rangy-1.2.3/rangy-selectionsaverestore.js")"></script>
-	<script type="text/javascript" src="@routes.Assets.at("javascripts/innerHTMLreplacement.js")"></script> 
-	<script type="text/javascript" src="@routes.Assets.at("javascripts/setCaretPosition.js")"></script> 
--->
-	<!--
-	<script language ="JavaScript"> 
-		
-		window.onload = StartFunction;
-	</script> 
-	-->
+
+	<!-- HTML-Replacement -->
+	<script type="text/javascript" src="@routes.Assets.at("javascripts/html-replacement.js")"></script>
+
+	<!-- javaScriptRoutes -->
+	<script type="text/javascript" src='@routes.Application.javascriptRoutes()'>
+	</script>
+	
 
 </head>
-<body>
+<body>	
+<center>
 	<h1> CIC - Web-Command Line </h1>
+	Go knock yourself out:  <br/>
+
+	<div id="cli" contenteditable="true" onkeyup="cliOnKeyUp()"></div>
+	<br />
+	<div id="suggestions" contenteditable="true"></div> 
+
+
+</center>
 
 
 
-	start
-	<div id="cli" contenteditable="true"></div>
-	ende
+
+
 </body>
 </html>
 

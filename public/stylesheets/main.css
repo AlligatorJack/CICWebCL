@@ -1,5 +1,22 @@
+body {
+margin: 0;
+padding: 0;
+width:100%;
+height:100%;
+}
 #cli {
 	border: 1px dotted black;
+	width: 300px;
+	text-align: left;;
+
+}
+
+#suggestions {
+	border: 1px solid black;
+	width: 100px;
+	height: 200px;
+	text-align: left;;
+
 }
 
 .keyword {color: #8B0000;}

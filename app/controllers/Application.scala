@@ -15,8 +15,9 @@ import scala.util.regexp.SyntaxError
 object Application extends Controller {
   
   def index = Action {
-    Ok(views.html.WebCLI.render())
-    //Ok(views.html.test.render())
+    // Ok(views.html.test.render())
+    Ok (views.html.WebCLI.render())
+    
   }
 
   def colorizeString(s: String)= Action {
@@ -40,24 +41,24 @@ object Application extends Controller {
   }
   
   def colorizeExpr(s: Symbol): NodeSeq = s match {
-    case AST.Ref(AST.Ident(name))             => Seq(<span class="vname">{name}</span>)
-    case AST.CApp(AST.Ident(name), pl)        => Seq(<span class="cname">{name}</span>, Text("(")) ++ colorizeExpr(pl)
+    case AST.Ref(AST.Ident(name))             => Seq(<span contenteditable="false" class="vname">{name}</span>)
+    case AST.CApp(AST.Ident(name), pl)        => Seq(<span contenteditable="false" class="cname">{name}</span>, Text("(")) ++ colorizeExpr(pl)
     case AST.ParamList(ap, np, isClosed)      => colorizeParams(ap, np) ++ (if(isClosed) Seq(Text(")")) else Seq())
-    case AST.NParamWithEqual(AST.Ident(name)) => Seq(<span class="pname">{name}</span>, Text(" = "))
-    case AST.NParamNoEqual(AST.Ident(name))   => Seq(<span class="pname">{name}</span>)
-    case AST.NParam_(AST.Ident(name), v)      => Seq(<span class="pname">{name}</span>, Text(" = ")) ++ colorizeExpr(v)
+    case AST.NParamWithEqual(AST.Ident(name)) => Seq(<span contenteditable="false" class="pname">{name}</span>, Text(" = "))
+    case AST.NParamNoEqual(AST.Ident(name))   => Seq(<span contenteditable="false" class="pname">{name}</span>)
+    case AST.NParam_(AST.Ident(name), v)      => Seq(<span contenteditable="false" class="pname">{name}</span>, Text(" = ")) ++ colorizeExpr(v)
     case AST.MissingElem()                    => Seq() 
-    case AST.Integer(v)                       => Seq(<span class="integer">{v}</span>)
-    case AST.Float(v)                         => Seq(<span class="float">{v}</span>)
-    case AST.String(v)                        => Seq(<span class="string">{v}</span>)
-    case AST.Bool(v)                          => Seq(<span class="boolean">{v}</span>)
+    case AST.Integer(v)                       => Seq(<span contenteditable="false" class="integer">{v}</span>)
+    case AST.Float(v)                         => Seq(<span contenteditable="false" class="float">{v}</span>)
+    case AST.String(v)                        => Seq(<span contenteditable="false" class="string">{v}</span>)
+    case AST.Bool(v)                          => Seq(<span contenteditable="false" class="boolean">{v}</span>)
     case AST.Seq(seq)                         => Seq(Text("[")) ++ splitSeq(seq, ",") ++ Seq(Text("]"))
-    case AST.LocalValDefsNoIn(defs)           => Seq(<span class="keyword">let</span>, Text(" ")) ++ splitSeq(defs, ";")
-    case AST.LocalValDefsWithIn(defs)         => colorizeExpr(AST.LocalValDefsNoIn(defs)) ++ Seq(Text(" "), <span class="keyword">in</span>)
+    case AST.LocalValDefsNoIn(defs)           => Seq(<span contenteditable="false" class="keyword">let</span>, Text(" ")) ++ splitSeq(defs, ";")
+    case AST.LocalValDefsWithIn(defs)         => colorizeExpr(AST.LocalValDefsNoIn(defs)) ++ Seq(Text(" "), <span contenteditable="false" class="keyword">in</span>)
     case AST.LocalValDefs(defs, expr)         => colorizeExpr(AST.LocalValDefsWithIn(defs)) ++ Seq(Text(" ")) ++ colorizeExpr(expr)   
-    case AST.ValDefNoEqual(AST.Ident(name))   => Seq(<span class="vname">{name}</span>) 
-    case AST.ValDefWithEqual(AST.Ident(name)) => Seq(<span class="vname">{name}</span>, Text(" = "))
-    case AST.ValDef_(AST.Ident(name), expr)   => Seq(<span class="vname">{name}</span>, Text(" = ")) ++ colorizeExpr(expr)
+    case AST.ValDefNoEqual(AST.Ident(name))   => Seq(<span contenteditable="false" class="vname">{name}</span>) 
+    case AST.ValDefWithEqual(AST.Ident(name)) => Seq(<span contenteditable="false" class="vname">{name}</span>, Text(" = "))
+    case AST.ValDef_(AST.Ident(name), expr)   => Seq(<span contenteditable="false" class="vname">{name}</span>, Text(" = ")) ++ colorizeExpr(expr)
   }
   
   def colorizeParams(ap: Seq[AST.Expr], np: Seq[AST.NParam]): NodeSeq = (ap, np) match {
@@ -77,5 +78,9 @@ object Application extends Controller {
     case Seq() => Seq()
     case n::np if np.isEmpty => colorizeExpr(n)
     case n::np => colorizeExpr(n) ++ Seq(Text(", ")) ++ splitNParams(np)
+  }
+
+  def getCompletions(str: String){
+    List("add", "analyze", "apply", "cancel", "copy", "cut", "maximize", "make", "minimize", "move", "paste", "save", "send")
   }
 }
