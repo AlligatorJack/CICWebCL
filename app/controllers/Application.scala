@@ -11,12 +11,16 @@ import play.api.templates.Html
 import scala.xml._
 import play.api.libs.iteratee.Enumerator
 import scala.util.regexp.SyntaxError
+import cmd.parsing.SymbolSeq
 
 object Application extends Controller {
   
   def index = Action {
     Ok(views.html.WebCLI.render())
-    //Ok(views.html.test.render())
+  }
+  
+  def test = Action {
+    Ok(views.html.test.render())
   }
 
   def colorizeString(s: String)= Action {
@@ -27,7 +31,7 @@ object Application extends Controller {
     }
     catch {
       //there is no exception if beaver can repair the user-string. We need to override Events.syntaxError maybe(just throw an Exception)
-      case e:Exception => Ok(s)
+      case e:Exception => Ok(colorizeTokens(new SymbolSeq(lexer)).toString)
     }
   }
   
@@ -37,6 +41,28 @@ object Application extends Controller {
           routes.javascript.Application.colorizeString       
       )
     ).as("text/javascript") 
+  }
+  
+  def colorizeTokens(tokenSeq: SymbolSeq): NodeSeq = {
+    Seq(<span class="keyword">{ss.length}</span>)
+//    tokenSeq.flatMap(x => x.getId() match {
+//      case 0  => Seq()
+//      case 1  => Seq(Text(","))
+//      case 2  => Seq(Text("]"))
+//      case 3  => Seq(Text(")"))
+//      case 4  => Seq(<span class="keyword">{x.value}</span>)
+//      case 5  => Seq(Text(";"))
+//      case 6  => Seq(<span class="name">{x.value}</span>)
+//      case 7  => Seq(Text("("))
+//      case 8  => Seq(<span class="keyword">{x.value}</span>)
+//      case 9  => Seq(Text("["))
+//      case 10 => Seq(<span class="integer">{x.value}</span>) 
+//      case 11 => Seq(<span class="float">{x.value}</span>)
+//      case 12 => Seq(<span class="string">{x.value}</span>)
+//      case 13 => Seq(<span class="boolean">{x.value}</span>)
+//      case 14 => Seq(<span class="boolean">{x.value}</span>)
+//      case 15 => Seq(Text("="))
+//    })
   }
   
   def colorizeExpr(s: Symbol): NodeSeq = s match {
