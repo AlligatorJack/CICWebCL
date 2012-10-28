@@ -44,7 +44,7 @@ object Application extends Controller {
   }
   
   def colorizeTokens(tokenSeq: SymbolSeq): NodeSeq = {
-    Seq(<span class="keyword">{ss.length}</span>)
+    Seq(<span class="keyword">{tokenSeq.length}</span>)
 //    tokenSeq.flatMap(x => x.getId() match {
 //      case 0  => Seq()
 //      case 1  => Seq(Text(","))
