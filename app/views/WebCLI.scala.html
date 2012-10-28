@@ -22,7 +22,12 @@
 	<!-- javaScriptRoutes -->
 	<script type="text/javascript" src='@routes.Application.javascriptRoutes()'>
 	</script>
-	
+
+	<script language ="JavaScript"> 
+		
+		window.onload = cliOnKeyUp;
+	</script> 
+
 
 </head>
 <body>	
@@ -30,7 +35,7 @@
 	<h1> CIC - Web-Command Line </h1>
 	Go knock yourself out:  <br/>
 
-	<div id="cli" contenteditable="true" onkeyup="cliOnKeyUp()"></div>
+	<div id="cli" contenteditable="true" ></div> <!--onkeyup="cliOnKeyUp()"-->
 	<br />
 	<div id="suggestions" contenteditable="true"></div> 
 

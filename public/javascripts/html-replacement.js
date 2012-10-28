@@ -6,20 +6,23 @@ function sleep(ms)
 		while (new Date().getTime() < dt.getTime());
 	}
 
+
 function formatText(el) {
 		    var savedSel = rangy.saveSelection();
 
-		    var text = el.innerHTML;
-
+		    var text = $(el).text();
+		    // text = unescape(text);
+		    
 		    
 			if (text.length == 0) {
-				newText = "leer!!";
+				newText = "leer";
 			}
 			else {
-			    jsRoutes.controllers.Application.colorizeString(text).ajax({
-			    		success: function(data) {  text = data; }
+			    jsRoutes.controllers.Application.colorizeString(encodeURIComponent(text)).ajax({
+			    		success: function(data) { text = text.replace(data) }//document.getElementById('cli').innerHTML = data; }
 				});
 			};
+			
 			
 
 
@@ -32,9 +35,9 @@ function formatText(el) {
 
 
 		    // text = text.replace("hi", newText)
-		    document.getElementById('suggestions').innerHTML = text;
+		    
 
-		    // el.innerHTML = newText;
+		    el.innerHTML = text;
 
 		    // Restore the original selection 
 		    rangy.restoreSelection(savedSel);
@@ -43,13 +46,15 @@ function formatText(el) {
 var keyTimer = null, keyDelay = 5;
 
 function cliOnKeyUp(){
-	if (keyTimer) {
-		window.clearTimeout(keyTimer);
-	}
-	keyTimer = window.setTimeout(function() {
-		keyTimer = null;
-		formatText(document.getElementById('cli'));
-	}, keyDelay);
+	document.getElementById('cli').onkeyup = function() {
+		if (keyTimer) {
+			window.clearTimeout(keyTimer);
+		}
+		keyTimer = window.setTimeout(function() {
+			keyTimer = null;
+			formatText('#cli');
+		}, keyDelay);
+	};
 };
 
 function setCaretPosition(elemId, caretPos) {
