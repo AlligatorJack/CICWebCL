@@ -6,8 +6,11 @@ function sleep(ms)
 		while (new Date().getTime() < dt.getTime());
 	}
 */
-function formatText(elem) {
-		    var savedSel = rangy.saveSelection();
+var caretPos = 0;
+function cliKeyUp(elem) {
+		    // var savedSel = rangy.saveSelection();
+		    caretPos = caretPos + 1;
+		    console.log(caretPos);
 
 		    var el = document.getElementById("cli");
 
@@ -23,16 +26,35 @@ function formatText(elem) {
 				$('#highlighted').text("");
 			}
 			else {
-
 				jsRoutes.controllers.Application.request(elText).ajax({
 					success : function(report) {
-						console.log(report);
-						$("#colored").html(report.colored);
-						$("#completions").empty()
-						$.each(report.completions, function(i, c) {
-							$("#completions").append("<li>" + c + "</li>")
-						});
-					}
+						
+						// $("#completions").empty()
+		        		// $.each(report.completions, function(i, c) { 
+		        			// $("#completions").append("<li>" + c + "</li>")
+						
+							$("#highlighted").html(report.colored);
+
+
+
+							/*
+							var elem = document.getElementById("editable");
+							var range = document.createRange();
+							var sel = window.getSelection();
+							range.setStart(elem.childNodes[2], 5);
+							range.collapse(true);
+							sel.removeAllRanges();
+							sel.addRange(range);
+							*/
+
+
+
+							setCaretPosition("cli", 2);
+							// el.focus();
+							// el.setPosition(3);
+				        	// rangy.restoreSelection(savedSel);
+		       		 	// });
+		    		}
 				});
 			}
 			    	
