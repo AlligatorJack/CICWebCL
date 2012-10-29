@@ -35,9 +35,9 @@ object Application extends Controller {
   }
   
   def request(expr: String) = Action {
+    val p = Position(0, 0)
     val ass = Assistant.create(expr.toSeq)
-    Ok("")
-    // Ok(Json.toJson(InputAssistanceReport(colorizeStringNotAction(expr), Assistant.completions(ass, p), Assistant.errors(ass))))
+    Ok(Json.toJson(InputAssistanceReport(colorizeStringNotAction(expr), Assistant.completions(ass, p), Assistant.errors(ass))))
   }
   
   def colorizeStringNotAction(s: String)= {
