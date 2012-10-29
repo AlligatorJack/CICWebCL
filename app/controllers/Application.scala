@@ -14,8 +14,16 @@ import scala.util.regexp.SyntaxError
 import cmd.parsing.SymbolSeq
 import java.net.URLDecoder;
 import play.api.libs.json.Json
+import cmd.assistance.DefaultAssistant
+import cmd.assistance.Assistant
+import cmd.parsing.partial.DefaultParser
+import cmddef.Command
 
 object Application extends Controller {
+
+  val cmds: Seq[Command] = Seq()
+
+  val Assistant: Assistant = new DefaultAssistant(cmds, DefaultParser)
   
   def index = Action {
     Ok(views.html.WebCLI.render())
@@ -26,6 +34,7 @@ object Application extends Controller {
   }
   
   def request(s: String) = Action {
+    val assistant = Assistant.create(s.toSeq)
     Ok(Json.toJson(InputAssistanceReport(colorizeStringNotAction(s), Seq("1", "2"), Seq("1", "2"))))
   }
   
