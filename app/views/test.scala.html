@@ -8,7 +8,13 @@ function colorize(str)
 	if (str.length == 0) {document.getElementById("colored").innerHTML=""}
 	else {
 		jsRoutes.controllers.Application.request(str).ajax({
-		    success : function(data) { document.getElementById("colored").innerHTML=data; }
+      success : function(report) {
+        $("#colored").innerHTML = report.colored;
+        $("#completions").empty()
+        $.each(report.completions, function(i, c) {
+          $("#completions").append("<li>" + c + "</li>")
+        });
+      }
 		});
 	}
 }
@@ -22,7 +28,7 @@ function colorize(str)
 Uncolored: <input type="text" id="txt1" size=50 onkeyup="colorize(this.value)"/>
 </form>
 <p>Colored: <span id="colored"></span></p> 
-<p>Completions: <span id="completions"></span></p> 
+<p>Completions: <ul id="completions"></ul></p> 
 
 </body>
 </html> 
