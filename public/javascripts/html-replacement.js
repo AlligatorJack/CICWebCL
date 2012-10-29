@@ -26,6 +26,7 @@ function formatText(elem) {
 
 				jsRoutes.controllers.Application.request(elText).ajax({
 					success : function(report) {
+						console.log(report);
 						$("#colored").html(report.colored);
 						$("#completions").empty()
 						$.each(report.completions, function(i, c) {

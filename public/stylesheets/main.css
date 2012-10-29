@@ -7,8 +7,8 @@ height:100%;
 #cli {
 	border: 1px dotted black;
 	width: 300px;
-	text-align: left;;
-
+	text-align: left;
+	height: 18px;
 }
 
 #highlighted {
