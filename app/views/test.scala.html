@@ -9,7 +9,7 @@ function colorize(str)
 	else {
 		jsRoutes.controllers.Application.request(str).ajax({
       success : function(report) {
-        $("#colored").innerHTML = report.colored;
+        $("#colored").html(report.colored);
         $("#completions").empty()
         $.each(report.completions, function(i, c) {
           $("#completions").append("<li>" + c + "</li>")
