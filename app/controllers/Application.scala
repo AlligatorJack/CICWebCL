@@ -2,7 +2,7 @@ package controllers
 
 import play.api._
 import play.api.mvc._
-import cmd.parsing.partial.PartialCmdParser
+import cmd.parsing.partial.PartialCmdNoRecoveryParser
 import cmd.parsing.partial.PartialCmdLexer
 import java.io.StringReader
 import cmd.ast.{partial => AST}
@@ -12,10 +12,19 @@ import scala.xml._
 import play.api.libs.iteratee.Enumerator
 import scala.util.regexp.SyntaxError
 import cmd.parsing.SymbolSeq
-import java.net.URLDecoder;
+import java.net.URLDecoder
 import play.api.libs.json.Json
+import cmd.assistance.DefaultAssistant
+import cmd.assistance.Assistant
+import cmd.parsing.partial.DefaultParser
+import cmddef.Command
+import util.Position
 
 object Application extends Controller {
+
+  val cmds: Seq[Command] = Seq()
+
+  val Assistant: Assistant = new DefaultAssistant(cmds, DefaultParser)
   
   def index = Action {
     Ok(views.html.WebCLI.render())
@@ -25,14 +34,17 @@ object Application extends Controller {
     Ok(views.html.test.render())
   }
   
-  def request(s: String) = Action {
-    Ok(Json.toJson(InputAssistanceReport(colorizeStringNotAction(s), Seq("1", "2"), Seq("1", "2"))))
+  def request(expr: String) = Action {
+    val p = Position(0, 0)
+    val ass = Assistant.create(expr.toSeq)
+    // Ok(Json.toJson(InputAssistanceReport(colorizeStringNotAction(expr), Assistant.completions(ass, p), Assistant.errors(ass))))
+    Ok(Json.toJson(InputAssistanceReport(colorizeStringNotAction(expr), Seq("1", "2"), Seq("1", "2"))))
   }
   
   def colorizeStringNotAction(s: String)= {
 
     try {
-      val expr = new PartialCmdParser().parse(new PartialCmdLexer(new StringReader(s))).asInstanceOf[AST.Expr]
+      val expr = new PartialCmdNoRecoveryParser().parse(new PartialCmdLexer(new StringReader(s))).asInstanceOf[AST.Expr]
       colorizeExpr(expr).toString
     }
     catch {
@@ -47,7 +59,7 @@ object Application extends Controller {
     // val s = URLDecoder.decode(str, "UTF-8")
     println(s);
     try {
-      val expr = new PartialCmdParser().parse(new PartialCmdLexer(new StringReader(s))).asInstanceOf[AST.Expr]
+      val expr = new PartialCmdNoRecoveryParser().parse(new PartialCmdLexer(new StringReader(s))).asInstanceOf[AST.Expr]
       Ok(colorizeExpr(expr).toString)
     }
     catch {
@@ -167,7 +179,8 @@ object Application extends Controller {
     case n::np => colorizeExpr(n) ++ Seq(Text(", ")) ++ splitNParams(np)
   }
 
-  def getCompletions(str: String){
-    List("add", "analyze", "apply", "cancel", "copy", "cut", "maximize", "make", "minimize", "move", "paste", "save", "send")
+  def getCompletions(str: String) : Seq[String] = {
+
+    Seq("add", "analyze", "apply", "cancel", "copy", "cut", "maximize", "make", "minimize", "move", "paste", "save", "send")
   }
 }
