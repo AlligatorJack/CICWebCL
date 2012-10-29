@@ -6,7 +6,7 @@ import cmd.parsing.partial.PartialCmdParser
 import cmd.parsing.partial.PartialCmdLexer
 import java.io.StringReader
 import cmd.ast.{partial => AST}
-import cmd.ast.Symbol
+import util.Symbol
 import play.api.templates.Html
 import scala.xml._
 import play.api.libs.iteratee.Enumerator
