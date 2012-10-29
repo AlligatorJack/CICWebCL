@@ -12,7 +12,6 @@ import scala.xml._
 import play.api.libs.iteratee.Enumerator
 import scala.util.regexp.SyntaxError
 import cmd.parsing.SymbolSeq
-import java.net.URLDecoder
 import play.api.libs.json.Json
 import cmd.assistance.DefaultAssistant
 import cmd.assistance.Assistant
@@ -34,8 +33,12 @@ object Application extends Controller {
     Ok(views.html.test.render())
   }
   
-  def request(expr: String) = Action {
+  def request(e: String) = Action {
     val p = Position(0, 0)
+    var expr = e;
+    println(expr)
+    // expr = java.net.URLDecoder.decode(expr, "UTF-8")
+    println(expr)
     val ass = Assistant.create(expr.toSeq)
     // Ok(Json.toJson(InputAssistanceReport(colorizeStringNotAction(expr), Assistant.completions(ass, p), Assistant.errors(ass))))
     Ok(Json.toJson(InputAssistanceReport(colorizeString(expr), Seq("1", "2"), Seq("1", "2"))))
