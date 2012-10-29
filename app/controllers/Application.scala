@@ -2,7 +2,7 @@ package controllers
 
 import play.api._
 import play.api.mvc._
-import cmd.parsing.partial.PartialCmdParser
+import cmd.parsing.partial.PartialCmdNoRecoveryParser
 import cmd.parsing.partial.PartialCmdLexer
 import java.io.StringReader
 import cmd.ast.{partial => AST}
@@ -44,7 +44,7 @@ object Application extends Controller {
   def colorizeString(s: String) = {
     //version with lexer
     try {
-      val expr = new PartialCmdParser().parse(new PartialCmdLexer(new StringReader(s))).asInstanceOf[AST.Expr]
+      val expr = new PartialCmdNoRecoveryParser().parse(new PartialCmdLexer(new StringReader(s))).asInstanceOf[AST.Expr]
       colorizeExpr(expr).toString
     }
     catch {
