@@ -38,11 +38,11 @@ object Application extends Controller {
     val p = Position(0, 0)
     val ass = Assistant.create(expr.toSeq)
     // Ok(Json.toJson(InputAssistanceReport(colorizeStringNotAction(expr), Assistant.completions(ass, p), Assistant.errors(ass))))
-    Ok(Json.toJson(InputAssistanceReport(colorizeStringNotAction(expr), Seq("1", "2"), Seq("1", "2"))))
+    Ok(Json.toJson(InputAssistanceReport(colorizeString(expr), Seq("1", "2"), Seq("1", "2"))))
   }
   
-  def colorizeStringNotAction(s: String)= {
-
+  def colorizeString(s: String) = {
+    //version with lexer
     try {
       val expr = new PartialCmdParser().parse(new PartialCmdLexer(new StringReader(s))).asInstanceOf[AST.Expr]
       colorizeExpr(expr).toString
@@ -52,44 +52,27 @@ object Application extends Controller {
       case e:Exception => colorizeLexer(new PartialCmdLexer(new StringReader(s))).toString
     }
     
-  }
-  
-  def colorizeString(s: String)= Action{
-    //version with lexer
-    // val s = URLDecoder.decode(str, "UTF-8")
-    println(s);
-    try {
-      val expr = new PartialCmdParser().parse(new PartialCmdLexer(new StringReader(s))).asInstanceOf[AST.Expr]
-      Ok(colorizeExpr(expr).toString)
-    }
-    catch {
-      //there is no exception if beaver can repair the user-string. We need to override Events.syntaxError maybe(just throw an Exception)
-      case e:Exception => Ok(colorizeLexer(new PartialCmdLexer(new StringReader(s))).toString)
-    }
-    
 //    //version with SymbolSeq
 //    try {
 //      val expr = new PartialCmdParser().parse(new PartialCmdLexer(new StringReader(s))).asInstanceOf[AST.Expr]
-//      Ok(colorizeExpr(expr).toString)
+//      colorizeExpr(expr).toString
 //    }
 //    catch {
 //      //there is no exception if beaver can repair the user-string. We need to override Events.syntaxError maybe(just throw an Exception)
-//      case e:Exception => Ok(colorizeTokens(new SymbolSeq(new PartialCmdLexer(new StringReader(s)))).toString)
+//      case e:Exception => colorizeTokens(new SymbolSeq(new PartialCmdLexer(new StringReader(s)))).toString
 //    }
     
 //    //test for colorizeTokens
-//    Ok(colorizeTokens(new SymbolSeq(new PartialCmdLexer(new StringReader(s)))).toString)
+//    colorizeTokens(new SymbolSeq(new PartialCmdLexer(new StringReader(s)))).toString
     
 //    //test for colorizeLexer
-//    Ok(colorizeLexer(new PartialCmdLexer(new StringReader(s))).toString)
+//    colorizeLexer(new PartialCmdLexer(new StringReader(s))).toString
   }
   
   def javascriptRoutes = Action { implicit request =>
     Ok(
       Routes.javascriptRouter("jsRoutes")(
-          routes.javascript.Application.request,
-          routes.javascript.Application.colorizeString
-//          routes.javascript.Application.completions
+          routes.javascript.Application.request
       )
     ).as("text/javascript") 
   }
