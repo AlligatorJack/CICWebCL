@@ -18,6 +18,7 @@ import cmd.assistance.DefaultAssistant
 import cmd.assistance.Assistant
 import cmd.parsing.partial.DefaultParser
 import cmddef.Command
+import util.Position
 
 object Application extends Controller {
 
@@ -33,9 +34,10 @@ object Application extends Controller {
     Ok(views.html.test.render())
   }
   
-  def request(s: String) = Action {
-    val assistant = Assistant.create(s.toSeq)
-    Ok(Json.toJson(InputAssistanceReport(colorizeStringNotAction(s), Seq("1", "2"), Seq("1", "2"))))
+  def request(expr: String) = Action {
+    val ass = Assistant.create(expr.toSeq)
+    Ok("")
+    // Ok(Json.toJson(InputAssistanceReport(colorizeStringNotAction(expr), Assistant.completions(ass, p), Assistant.errors(ass))))
   }
   
   def colorizeStringNotAction(s: String)= {
