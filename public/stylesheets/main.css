@@ -11,6 +11,14 @@ height:100%;
 
 }
 
+#highlighted {
+	border: 1px solid black;
+	width: 300px;
+	text-align: left;
+	height: 18px;
+
+}
+
 #suggestions {
 	border: 1px solid black;
 	width: 100px;
