@@ -13,6 +13,7 @@ import play.api.libs.iteratee.Enumerator
 import scala.util.regexp.SyntaxError
 import cmd.parsing.SymbolSeq
 import java.net.URLDecoder;
+import play.api.libs.json.Json
 
 
 object Application extends Controller {
@@ -24,8 +25,31 @@ object Application extends Controller {
   def test = Action {
     Ok(views.html.test.render())
   }
+  
+  def request(s: String) = Action {
+    val e = colorizeStringNotAction(s)
+    Ok(Json.toJson(e))
+  }
+  
+  def colorizeStringNotAction(s: String)= {
 
-  def colorizeString(s: String)= Action {
+    try {
+      val expr = new PartialCmdParser().parse(new PartialCmdLexer(new StringReader(s))).asInstanceOf[AST.Expr]
+      colorizeExpr(expr).toString
+    }
+    catch {
+      //there is no exception if beaver can repair the user-string. We need to override Events.syntaxError maybe(just throw an Exception)
+      case e:Exception => colorizeLexer(new PartialCmdLexer(new StringReader(s))).toString
+    }
+    
+  }
+  
+  def completions(s: String) =  {
+    Seq("first completion", "second completion")
+//    Ok(Json.toJson(e))
+  }
+
+  def colorizeString(s: String)= Action{
     //version with lexer
     // val s = URLDecoder.decode(str, "UTF-8")
     try {
@@ -57,7 +81,9 @@ object Application extends Controller {
   def javascriptRoutes = Action { implicit request =>
     Ok(
       Routes.javascriptRouter("jsRoutes")(
-          routes.javascript.Application.colorizeString       
+          routes.javascript.Application.request,
+          routes.javascript.Application.colorizeString
+//          routes.javascript.Application.completions
       )
     ).as("text/javascript") 
   }

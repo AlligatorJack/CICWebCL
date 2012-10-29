@@ -5,10 +5,10 @@
 <script>
 function colorize(str)
 {
-	if (str.length == 0) {document.getElementById("txtHint").innerHTML=""}
+	if (str.length == 0) {document.getElementById("colored").innerHTML=""}
 	else {
-		jsRoutes.controllers.Application.colorizeString(str).ajax({
-		    success : function(data) { document.getElementById("txtHint").innerHTML=data; }
+		jsRoutes.controllers.Application.request(str).ajax({
+		    success : function(data) { document.getElementById("colored").innerHTML=data; }
 		});
 	}
 }
@@ -21,7 +21,8 @@ function colorize(str)
 <form action=""> 
 Uncolored: <input type="text" id="txt1" size=50 onkeyup="colorize(this.value)"/>
 </form>
-<p>Colored: <span id="txtHint"></span></p> 
+<p>Colored: <span id="colored"></span></p> 
+<p>Completions: <span id="completions"></span></p> 
 
 </body>
 </html> 

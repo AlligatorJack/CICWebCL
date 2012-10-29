@@ -6,7 +6,9 @@
 
 GET     /                       controllers.Application.index
 GET     /test                   controllers.Application.test
-GET		/ajax/:s				controllers.Application.colorizeString(s: String)	
+GET 	/request/:s 			controllers.Application.request(s: String)
+GET		/colorize/:s		    controllers.Application.colorizeString(s: String)
+#GET		/completions/:s			controllers.Application.completions(s: String)
 
 GET     /javascriptRoutes       controllers.Application.javascriptRoutes			
 
