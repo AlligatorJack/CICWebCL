@@ -59,7 +59,7 @@ object Application extends Controller {
     // val s = URLDecoder.decode(str, "UTF-8")
     println(s);
     try {
-      val expr = new PartialCmdParser().parse(new PartialCmdLexer(new StringReader(s))).asInstanceOf[AST.Expr]
+      val expr = new PartialCmdNoRecoveryParser().parse(new PartialCmdLexer(new StringReader(s))).asInstanceOf[AST.Expr]
       Ok(colorizeExpr(expr).toString)
     }
     catch {
