@@ -2,17 +2,16 @@ package colors;
 
 import org.scalatest.FunSuite
 import org.scalatest.matchers.ShouldMatchers._
-import cmd.partial.PartialCmdParser
-import cmd.partial.PartialCmdLexer
-import cmd.ast.{Seq => ASeq, String => AString, LocalValDefs => _, CApp => _, ParamList => _, _}
-import cmd.partial.ast._
+import cmd.parsing.partial.PartialCmdParser
+import cmd.parsing.partial.PartialCmdLexer
+import cmd.ast.{partial => AST}
 import java.io.StringReader
 import controllers.Application._
 
 
 class ColorizeTestSuite extends FunSuite {
 
-  def parse(input: String): Expr = new PartialCmdParser().parse(new PartialCmdLexer(new StringReader(input))).asInstanceOf[Expr]
+  def parse(input: String): AST.Expr = new PartialCmdParser().parse(new PartialCmdLexer(new StringReader(input))).asInstanceOf[AST.Expr]
 
   val testCase1 = "cmd"
 

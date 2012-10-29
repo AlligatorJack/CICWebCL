@@ -8,13 +8,13 @@ function colorize(str)
 	if (str.length == 0) {document.getElementById("colored").innerHTML=""}
 	else {
 		jsRoutes.controllers.Application.request(str).ajax({
-      success : function(report) {
-        $("#colored").innerHTML = report.colored;
-        $("#completions").empty()
-        $.each(report.completions, function(i, c) {
-          $("#completions").append("<li>" + c + "</li>")
-        });
-      }
+      		success : function(report) {
+		        $("#colored").innerHTML = report.colored;
+		        $("#completions").empty()
+		        $.each(report.completions, function(i, c) { // TODO: Florian ˆ1.000.000 schenken! 
+		          $("#completions").append("<li>" + c + "</li>")
+		        });
+      		}
 		});
 	}
 }
