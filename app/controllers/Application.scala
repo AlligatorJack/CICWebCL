@@ -42,25 +42,25 @@ object Application extends Controller {
   }
   
   def colorizeString(s: String) = {
-    //version with lexer
+//    //version with lexer
+//    try {
+//      val expr = new PartialCmdNoRecoveryParser().parse(new PartialCmdLexer(new StringReader(s))).asInstanceOf[AST.Expr]
+//      colorizeExpr(expr).toString
+//    }
+//    catch {
+//      //there is no exception if beaver can repair the user-string. We need to override Events.syntaxError maybe(just throw an Exception)
+//      case e:Exception => colorizeLexer(new PartialCmdLexer(new StringReader(s))).toString
+//    }
+    
+    //version with SymbolSeq
     try {
       val expr = new PartialCmdNoRecoveryParser().parse(new PartialCmdLexer(new StringReader(s))).asInstanceOf[AST.Expr]
       colorizeExpr(expr).toString
     }
     catch {
       //there is no exception if beaver can repair the user-string. We need to override Events.syntaxError maybe(just throw an Exception)
-      case e:Exception => colorizeLexer(new PartialCmdLexer(new StringReader(s))).toString
+      case e:Exception => colorizeTokens(new SymbolSeq(new PartialCmdLexer(new StringReader(s)))).toString
     }
-    
-//    //version with SymbolSeq
-//    try {
-//      val expr = new PartialCmdParser().parse(new PartialCmdLexer(new StringReader(s))).asInstanceOf[AST.Expr]
-//      colorizeExpr(expr).toString
-//    }
-//    catch {
-//      //there is no exception if beaver can repair the user-string. We need to override Events.syntaxError maybe(just throw an Exception)
-//      case e:Exception => colorizeTokens(new SymbolSeq(new PartialCmdLexer(new StringReader(s)))).toString
-//    }
     
 //    //test for colorizeTokens
 //    colorizeTokens(new SymbolSeq(new PartialCmdLexer(new StringReader(s)))).toString
@@ -99,27 +99,25 @@ object Application extends Controller {
     }
   }
   
-  //something is wrong with SymbolSeq
   def colorizeTokens(tokenSeq: SymbolSeq): NodeSeq = {
-    tokenSeq.map(x => <span class="keyword">{x.value}</span>)
-//    tokenSeq.flatMap(x => x.getId() match {
-//      case 0  => Seq()
-//      case 1  => Seq(Text(","))
-//      case 2  => Seq(Text("]"))
-//      case 3  => Seq(Text(")"))
-//      case 4  => Seq(<span class="keyword">in</span>)
-//      case 5  => Seq(Text(";"))
-//      case 6  => Seq(<span class="name">{x.value}</span>)
-//      case 7  => Seq(Text("("))
-//      case 8  => Seq(<span class="keyword">let</span>)
-//      case 9  => Seq(Text("["))
-//      case 10 => Seq(<span class="integer">{x.value}</span>) 
-//      case 11 => Seq(<span class="float">{x.value}</span>)
-//      case 12 => Seq(<span class="string">{x.value}</span>)
-//      case 13 => Seq(<span class="boolean">{x.value}</span>)
-//      case 14 => Seq(<span class="boolean">{x.value}</span>)
-//      case 15 => Seq(Text("="))
-//    })
+    tokenSeq.flatMap(x => x.getId() match {
+      case 0  => Seq()
+      case 1  => Seq(Text(", "))
+      case 2  => Seq(Text("] "))
+      case 3  => Seq(Text(") "))
+      case 4  => Seq(<span class="keyword">in </span>)
+      case 5  => Seq(Text(";"))
+      case 6  => Seq(<span class="name">{x.value} </span>)
+      case 7  => Seq(Text("( "))
+      case 8  => Seq(<span class="keyword">let </span>)
+      case 9  => Seq(Text("[ "))
+      case 10 => Seq(<span class="integer">{x.value} </span>) 
+      case 11 => Seq(<span class="float">{x.value} </span>)
+      case 12 => Seq(<span class="string">"{x.value}" </span>)
+      case 13 => Seq(<span class="boolean">{x.value} </span>)
+      case 14 => Seq(<span class="boolean">{x.value} </span>)
+      case 15 => Seq(Text(" = "))
+    })
   }
   
   def colorizeExpr(s: Symbol): NodeSeq = s match {
