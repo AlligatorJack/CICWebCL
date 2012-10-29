@@ -2,7 +2,7 @@ package controllers
 
 import play.api._
 import play.api.mvc._
-import cmd.parsing.partial.PartialCmdParser
+import cmd.parsing.partial.PartialCmdNoRecoveryParser
 import cmd.parsing.partial.PartialCmdLexer
 import java.io.StringReader
 import cmd.ast.{partial => AST}
@@ -14,15 +14,11 @@ import scala.util.regexp.SyntaxError
 import cmd.parsing.SymbolSeq
 import java.net.URLDecoder
 import play.api.libs.json.Json
-<<<<<<< HEAD
-import cmd.assistance._
-=======
 import cmd.assistance.DefaultAssistant
 import cmd.assistance.Assistant
 import cmd.parsing.partial.DefaultParser
 import cmddef.Command
 import util.Position
->>>>>>> bf8f950fd44b1e4ab150f387ba762815337144ab
 
 object Application extends Controller {
 
@@ -38,22 +34,16 @@ object Application extends Controller {
     Ok(views.html.test.render())
   }
   
-<<<<<<< HEAD
-  def request(s: String) = Action {
-    val Assistant = new DefaultAssistant()
-    Ok(Json.toJson(InputAssistanceReport(colorizeStringNotAction(s),Seq("1", "2"), Seq("1", "2"))))
-=======
   def request(expr: String) = Action {
     val ass = Assistant.create(expr.toSeq)
-    Ok("")
     // Ok(Json.toJson(InputAssistanceReport(colorizeStringNotAction(expr), Assistant.completions(ass, p), Assistant.errors(ass))))
->>>>>>> bf8f950fd44b1e4ab150f387ba762815337144ab
+    Ok(Json.toJson(InputAssistanceReport(colorizeStringNotAction(expr), Seq("1", "2"), Seq("1", "2"))))
   }
   
   def colorizeStringNotAction(s: String)= {
 
     try {
-      val expr = new PartialCmdParser().parse(new PartialCmdLexer(new StringReader(s))).asInstanceOf[AST.Expr]
+      val expr = new PartialCmdNoRecoveryParser().parse(new PartialCmdLexer(new StringReader(s))).asInstanceOf[AST.Expr]
       colorizeExpr(expr).toString
     }
     catch {
