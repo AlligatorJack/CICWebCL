@@ -1,9 +1,12 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
 <head>
 	<title>CIC-Web Command Line</title>
+
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
 
 	<!-- CSS, Icon -->
  	<link type="text/css" rel="stylesheet" href="@routes.Assets.at("stylesheets/main.css")">
@@ -23,37 +26,20 @@
 	<script type="text/javascript" src='@routes.Application.javascriptRoutes()'>
 	</script>
 
-	<script language ="JavaScript"> 
-		
-		window.onload = cliOnKeyUp;
-	</script> 
 
 
 </head>
 <body>	
 <center>
 	<h1> CIC - Web-Command Line </h1>
+
 	Go knock yourself out:  <br/>
-
-	<div id="cli" contenteditable="true" ></div> <!--onkeyup="cliOnKeyUp()"-->
-	<br />
-	<div id="suggestions" contenteditable="true"></div> 
-
+	<div id="cli" contenteditable="true" onkeyup="formatText($('#cli'))"></div>
+	Highlighted:  <br/>
+	<div id="highlighted"></div>
+	<div id="suggestions"></div> 
 
 </center>
 
-
-
-
-
 </body>
 </html>
-
-
-
-
-
-
-
-
-
