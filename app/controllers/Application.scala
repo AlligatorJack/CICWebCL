@@ -14,9 +14,21 @@ import scala.util.regexp.SyntaxError
 import cmd.parsing.SymbolSeq
 import java.net.URLDecoder
 import play.api.libs.json.Json
+<<<<<<< HEAD
 import cmd.assistance._
+=======
+import cmd.assistance.DefaultAssistant
+import cmd.assistance.Assistant
+import cmd.parsing.partial.DefaultParser
+import cmddef.Command
+import util.Position
+>>>>>>> bf8f950fd44b1e4ab150f387ba762815337144ab
 
 object Application extends Controller {
+
+  val cmds: Seq[Command] = Seq()
+
+  val Assistant: Assistant = new DefaultAssistant(cmds, DefaultParser)
   
   def index = Action {
     Ok(views.html.WebCLI.render())
@@ -26,9 +38,16 @@ object Application extends Controller {
     Ok(views.html.test.render())
   }
   
+<<<<<<< HEAD
   def request(s: String) = Action {
     val Assistant = new DefaultAssistant()
     Ok(Json.toJson(InputAssistanceReport(colorizeStringNotAction(s),Seq("1", "2"), Seq("1", "2"))))
+=======
+  def request(expr: String) = Action {
+    val ass = Assistant.create(expr.toSeq)
+    Ok("")
+    // Ok(Json.toJson(InputAssistanceReport(colorizeStringNotAction(expr), Assistant.completions(ass, p), Assistant.errors(ass))))
+>>>>>>> bf8f950fd44b1e4ab150f387ba762815337144ab
   }
   
   def colorizeStringNotAction(s: String)= {
