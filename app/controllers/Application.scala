@@ -27,8 +27,7 @@ object Application extends Controller {
   }
   
   def request(s: String) = Action {
-    val e = colorizeStringNotAction(s)
-    Ok(Json.toJson(e))
+    Ok(Json.toJson((colorizeStringNotAction(s), completions(s))))
   }
   
   def colorizeStringNotAction(s: String)= {
