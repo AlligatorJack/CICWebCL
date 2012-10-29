@@ -15,7 +15,6 @@ import cmd.parsing.SymbolSeq
 import java.net.URLDecoder;
 import play.api.libs.json.Json
 
-
 object Application extends Controller {
   
   def index = Action {
@@ -27,7 +26,7 @@ object Application extends Controller {
   }
   
   def request(s: String) = Action {
-    Ok(Json.toJson((colorizeStringNotAction(s), completions(s))))
+    Ok(Json.toJson(InputAssistanceReport(colorizeStringNotAction(s), Seq("1", "2"), Seq("1", "2"))))
   }
   
   def colorizeStringNotAction(s: String)= {
@@ -43,11 +42,6 @@ object Application extends Controller {
     
   }
   
-  def completions(s: String) =  {
-    Seq("first completion", "second completion")
-//    Ok(Json.toJson(e))
-  }
-
   def colorizeString(s: String)= Action{
     //version with lexer
     // val s = URLDecoder.decode(str, "UTF-8")

@@ -2,11 +2,18 @@ package controllers
 
 import play.api.libs.json._
 
-case class InputAssistanceReport(colered: String, completions: Seq[String], errors: Seq[String])
+case class InputAssistanceReport(colored: String, completions: Seq[String], errors: Seq[String])
 
-object JsonWriter {
+object InputAssistanceReport {
 
   implicit object InputAssistanceReportJson extends Writes[InputAssistanceReport] {
-    def writes(o: InputAssistanceReport): JsValue = JsString("Add implementation") //Add implementation
+    def writes(o: InputAssistanceReport): JsValue =
+      Json.toJson(
+        Map(
+          "colored"     -> Json.toJson(o.colored),
+          "completions" -> Json.toJson(o.completions),
+          "errors"      -> Json.toJson(o.errors)
+        )
+      )
   }
 }
