@@ -12,8 +12,9 @@ import scala.xml._
 import play.api.libs.iteratee.Enumerator
 import scala.util.regexp.SyntaxError
 import cmd.parsing.SymbolSeq
-import java.net.URLDecoder;
+import java.net.URLDecoder
 import play.api.libs.json.Json
+import cmd.assistance._
 
 object Application extends Controller {
   
@@ -26,7 +27,8 @@ object Application extends Controller {
   }
   
   def request(s: String) = Action {
-    Ok(Json.toJson(InputAssistanceReport(colorizeStringNotAction(s), Seq("1", "2"), Seq("1", "2"))))
+    val Assistant = new DefaultAssistant()
+    Ok(Json.toJson(InputAssistanceReport(colorizeStringNotAction(s),Seq("1", "2"), Seq("1", "2"))))
   }
   
   def colorizeStringNotAction(s: String)= {
@@ -167,7 +169,8 @@ object Application extends Controller {
     case n::np => colorizeExpr(n) ++ Seq(Text(", ")) ++ splitNParams(np)
   }
 
-  def getCompletions(str: String){
-    List("add", "analyze", "apply", "cancel", "copy", "cut", "maximize", "make", "minimize", "move", "paste", "save", "send")
+  def getCompletions(str: String) : Seq[String] = {
+
+    Seq("add", "analyze", "apply", "cancel", "copy", "cut", "maximize", "make", "minimize", "move", "paste", "save", "send")
   }
 }
