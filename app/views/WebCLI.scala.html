@@ -19,6 +19,8 @@
     <script type="text/javascript" src="@routes.Assets.at("javascripts/rangy-1.2.3/rangy-core.js")"></script>
 	<script type="text/javascript" src="@routes.Assets.at("javascripts/rangy-1.2.3/rangy-selectionsaverestore.js")"></script>
 
+	<!-- Caret Position 
+	<script type="text/javascript" src="@routes.Assets.at("javascripts/cursor.js")"></script>-->
 	<!-- HTML-Replacement -->
 	<script type="text/javascript" src="@routes.Assets.at("javascripts/html-replacement.js")"></script>
 
@@ -29,12 +31,13 @@
 
 
 </head>
-<body>	
+<body><!-- onload="setup('cli')">-->
 <center>
 	<h1> CIC - Web-Command Line </h1>
 
 	Go knock yourself out:  <br/>
-	<div id="cli" contenteditable="true" onkeyup="cliKeyUp($('#cli'))"></div>
+	<input class="input" type="text" id="cli" onkeyup="return(cliKeyUp(this))" /> <br />
+	<!-- <div id="cli" contenteditable="true" onkeyup="cliKeyUp($('#cli'))"></div> -->
 	Highlighted:  <br/>
 	<div id="highlighted"></div>
 	<div id="suggestions"></div> 

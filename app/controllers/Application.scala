@@ -34,12 +34,13 @@ object Application extends Controller {
     Ok(views.html.test.render())
   }
   
-  def request(e: String) = Action {
-    val p = Position(0, 0)
-    var expr = e;
-    println(expr)
-    // expr = java.net.URLDecoder.decode(expr, "UTF-8")
-    println(expr)
+  def request(s: String) = Action {
+
+    var expr = s.substring(0,s.indexOf("$$$"))
+    val pos = s.substring(s.indexOf("$$$")+3).toInt
+
+    val p = Position(1, pos)
+    expr = java.net.URLDecoder.decode(expr, "UTF-8")
     val ass = Assistant.create(expr.toSeq)
     Ok(Json.toJson(InputAssistanceReport(expr, Assistant.completions(ass, p).map(_.toString), Assistant.errors(ass).map(_.toString))))
   }
