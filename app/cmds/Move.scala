@@ -9,16 +9,14 @@ object Move extends Command {
   val name = "move"
   val help = "Kommandohilfe fuer move"
   val returnType = "String"
-  val params: List[Param] = List(new ParamTyped[String]("src", "hilfe fuer p1", { (p1comp: Option[String]) =>
+  val params: List[Param] = List(new ParamTyped[String]("src", "hilfe fuer p1", { (comp: Option[String]) =>
      
-	val list = List("D:\\bank", "D:\\blockHouse", "D:\\boobsDance")
-	if (p1comp.isEmpty) list
-	else list.filter(x => x.substring(0, p1comp.get.length) == p1comp.get) 
-  }, Type.String, None), new ParamTyped[String]("dest", "hilfe fuer p2", { (p2comp: Option[String]) =>
+	List("C:\\Programme", "C:\\Projects", "C:\\Pizdec").filter(p => p.startsWith(comp.getOrElse("")))
+
+  }, Type.String, None), new ParamTyped[String]("dest", "hilfe fuer p2", { (comp: Option[String]) =>
      
-	val list = List("D:\\home", "D:\\here", "D:\\hurryUp")
-	if (p2comp.isEmpty) list
-	else list.filter(x => x.substring(0, p2comp.get.length) == p2comp.get) 
+	List("D:\\Sport", "D:\\Scala", "D:\\Suki").filter(p => p.startsWith(comp.getOrElse("")))
+
   }, Type.String, None))
   def apply(src: String, dest: String): String = {
      "moved from " + src + " to " + dest 

@@ -19,6 +19,7 @@ import cmd.parsing.partial.DefaultParser
 import cmddef.Command
 import util.Position
 import cmds.CommandsSeq
+import scala.collection.immutable.Seq
 
 object Application extends Controller {
 
@@ -45,8 +46,13 @@ object Application extends Controller {
 
     val p = Position(1, pos)
 
-    val ass = Assistant.create(expr.toSeq)
+    val ass = Assistant.create(Seq() ++ expr.toSeq)
+    //val comps = Assistant.completions(ass, p).map(_.toString)
+
+    //println(comps)
+
     Ok(Json.toJson(InputAssistanceReport(colorizeString(expr), Assistant.completions(ass, p).map(_.toString), Assistant.errors(ass).map(_.toString))))
+    //Ok(Json.toJson(InputAssistanceReport(colorizeString(expr), Seq("1", "2"), Assistant.errors(ass).map(_.toString))))
   }
   
   def colorizeString(s: String) = {

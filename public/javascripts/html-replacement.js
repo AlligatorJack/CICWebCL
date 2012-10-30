@@ -16,15 +16,15 @@
 				jsRoutes.controllers.Application.request(elText+"$$$"+getSelectionStart(elem)).ajax({
 					success : function(report) {
 						
+            console.log(report);
 						$("#completions").text("")
 		        		$.each(report.completions, function(i, c) { 
 		        			$("#completions").append(c)
 						
-							$("#highlighted").html(report.colored);
 							console.log("coloredresult:" + report.colored);
 						});
 
-
+						$("#highlighted").html(report.colored);
 		    		}
 				});
 			}
