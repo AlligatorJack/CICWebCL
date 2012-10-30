@@ -1,0 +1,17 @@
+<script language="JavaScript" type="text/javascript">
+
+var myobject = {
+    ValueA : 'Text A',
+    ValueB : 'Text B',
+    ValueC : 'Text C'
+};
+
+var select = document.getElementById("example-select");
+for(index in myobject) {
+    select.options[select.options.length] = new Option(myobject[index], index);
+}
+
+</script>
+
+
+<select id="example-select"></select>

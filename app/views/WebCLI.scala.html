@@ -29,18 +29,41 @@
 	</script>
 
 
-
+  
+   
 </head>
-<body><!-- onload="setup('cli')">-->
+<body>
 <center>
 	<h1> CIC - Web-Command Line </h1>
 
-	Go knock yourself out:  <br/>
-	<input class="input" type="text" id="cli" onkeyup="return(cliKeyUp(this))" /> <br />
-	<!-- <div id="cli" contenteditable="true" onkeyup="cliKeyUp($('#cli'))"></div> -->
-	Highlighted:  <br/>
-	<div id="highlighted"></div>
-	<div id="completions"></div> 
+	<br /> <br /> 
+	<span style="font-size: 20px; font-weight: bold;">Go knock yourself out...</span>  <br /> <br /> 
+
+	<div for="tags" id="cli" contenteditable="true" onkeyup="cliKeyUp($('#cli'), event);">
+
+	</div>
+	<br />
+	<br />
+	<br />
+	<table id="table">
+		<tr>
+			<td style="padding-right:35px" >Highlighted</td>
+			<td><div id="highlighted"></div></td>
+		</tr>
+		<tr>
+			<td style="padding-right:35px">Errors</td>
+			<td><div id="errors"></div></td>
+		</tr>
+		<tr>
+			<td style="padding-right:35px">Results</td>
+			<td><div id="results"></div></td>
+		</tr>
+	</table>
+
+	<br /> 	<br />	<br />
+
+	<select width="60" name="completions" id="completions" multiple="multiple"></select>
+	<br /> 	<br />
 
 </center>
 

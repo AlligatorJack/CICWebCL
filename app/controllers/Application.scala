@@ -30,10 +30,6 @@ object Application extends Controller {
     Ok(views.html.WebCLI.render())
   }
   
-  def test = Action {
-    Ok(views.html.test.render())
-  }
-  
   def request(s: String) = Action {
 
     val decoded = java.net.URLDecoder.decode(s, "UTF-8")
@@ -80,7 +76,8 @@ object Application extends Controller {
   def javascriptRoutes = Action { implicit request =>
     Ok(
       Routes.javascriptRouter("jsRoutes")(
-          routes.javascript.Application.request
+          routes.javascript.Application.request,
+          routes.javascript.Application.execute
       )
     ).as("text/javascript") 
   }

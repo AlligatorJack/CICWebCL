@@ -1,4 +1,5 @@
-﻿function cliKeyUp(elem) { // fuer div
+﻿/*
+function cliKeyUp(elem) { // worx!!! fuer input
 
 		    var elText = elem.value;
 			
@@ -28,31 +29,17 @@
 		    		}
 				});
 			}
-					/*var url = "/" + elText;
-					
-					$.ajax({
-				  		url: url,
-					}).done(function( data ) {
-				  		console.log(data);
-				  		// console.log($('#suggestions').elText());
-				  		// document.getElementById("suggestions").innerHTML = data;
-				  		
-				  		// elText = data;                 
-				  		$('#highlighted').html(data);
-
-				  		rangy.restoreSelection(savedSel);
-
-					});
-*/
 };
+*/
 
-/*
-function cliKeyUp(elem) { // fuer div
 
-		    var el = document.getElementById("cli");
+function cliKeyUp(elem, key) { // fuer div
 
-		    var elText = el.textContent;
-		
+		    var elText = document.getElementById("cli").textContent;
+		    var keyCode = key?key.which:event.key.keyCode;
+
+		    var oldCurserPos = getCurser();
+
 
 			elText = encodeURIComponent(elText);
 		    elText = elText.replace(/%EF%BB%BF/gm, "")
@@ -60,105 +47,79 @@ function cliKeyUp(elem) { // fuer div
 
 		    
 			if (elText.length == 0) {
+				$('#cli').text("");
 				$('#highlighted').text("");
+				$('#errors').text("");
+				document.getElementById("completions").options.length = 0;
+
 			}
 			else {
-				jsRoutes.controllers.Application.request(elText+"$$$"+getSelectionStart(elem)).ajax({
-					success : function(report) {
-						
-						// $("#completions").empty()
-		        		// $.each(report.completions, function(i, c) { 
-		        			// $("#completions").append("<li>" + c + "</li>")
-						
-							$("#highlighted").html(report.colored);
+				if(keyCode != 13) {
 
 
-		    		}
-				});
-			}
-					// var url = "/" + elText;
-					
-					// $.ajax({
-				 //  		url: url,
-					// }).done(function( data ) {
-				 //  		console.log(data);
-				 //  		// console.log($('#suggestions').elText());
-				 //  		// document.getElementById("suggestions").innerHTML = data;
-				  		
-				 //  		// elText = data;                 
-				 //  		$('#highlighted').html(data);
+					jsRoutes.controllers.Application.request(elText+"$$$"+getCurser()).ajax({
+						success : function(report) {
+							
+							document.getElementById("completions").options.length = 0;
 
-				 //  		rangy.restoreSelection(savedSel);
+							$.each(report.completions, function(i, c) { 
+								document.getElementById("completions").options[document.getElementById("completions").options.length] = new Option(c, i);
+							});
 
+							$.each(report.errors, function(i, c) { 
+								$('#errors').html($('#errors').text + c);
+							});
+
+							$('#highlighted').html(report.colored);
+						}
 					});
 
-};
-*/
 
-function getSelectionStart(o) {
+				}
+				else {
+					jsRoutes.controllers.Application.apply(elText).ajax({
+						success : function(report) {
+							
+							
+							// $.each(report.errors, function(i, c) { 
+			    //     			$('#errors').html($('#errors').text + c);
+							// });
+
+							// $('#result').html(report.result);
+												}
+					});
+			}
+		}
+
+};
+
+
+function setCurser(pos) {		// works for div!!
+
+		var content = document.getElementById('cli');
+    	content.focus();
+  		var sel = window.getSelection();
+  		sel.collapse(content.firstChild, pos);
+};
+
+
+function getCurser() {		// works for div!!
+
+    	var userSelection;
+    	if (window.getSelection) {
+    		userSelection = window.getSelection();
+    	}
+    	var start = userSelection.anchorOffset;
+    	var end = userSelection.focusOffset;
+
+    	return start;
+};
+
+function getSelectionStart(o) {		// works!! for input
 	if (o.createTextRange) {
 		var r = document.selection.createRange().duplicate()
 		r.moveEnd('character', o.value.length)
 		if (r.text == '') return o.value.length
 		return o.value.lastIndexOf(r.text)
 	} else return o.selectionStart
-}
-
-
-/*var keyTimer = null, keyDelay = 5;
-
-function cliOnKeyUp(){
-	document.getElementById('cli').onkeyup = function() {
-		if (keyTimer) {
-			window.clearTimeout(keyTimer);
-		}
-		keyTimer = window.setTimeout(function() {
-			keyTimer = null;
-			formatText($('#cli'));
-		}, keyDelay);
-	};
-};*/
-
-/*function getCaretPosition(editableDiv) {	// fuer div
-    var caretPos = 0, containerEl = null, sel, range;
-    if (window.getSelection) {
-        sel = window.getSelection();
-        if (sel.rangeCount) {
-            range = sel.getRangeAt(0);
-            if (range.commonAncestorContainer.parentNode == editableDiv) {
-                caretPos = range.endOffset;
-            }
-        }
-    } else if (document.selection && document.selection.createRange) {
-        range = document.selection.createRange();
-        if (range.parentElement() == editableDiv) {
-            var tempEl = document.createElement("span");
-            editableDiv.insertBefore(tempEl, editableDiv.firstChild);
-            var tempRange = range.duplicate();
-            tempRange.moveToElementText(tempEl);
-            tempRange.setEndPoint("EndToEnd", range);
-            caretPos = tempRange.text.length;
-        }
-    }
-    return caretPos;
-}
-function setCaretPosition(elemId, caretPos) {		// fuer div
-			var elem = document.getElementById(elemId);
-
-			if(elem != null) {
-				if(elem.createTextRange) {
-					var range = elem.createTextRange();
-					range.move('character', caretPos);
-					range.select();
-				}
-				else {
-					if(elem.selectionStart) {
-						elem.focus();
-						elem.setSelectionRange(caretPos, caretPos);
-					}
-					else
-						elem.focus();
-				}
-			}
 };
-*/
