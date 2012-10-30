@@ -36,11 +36,15 @@ object Application extends Controller {
   
   def request(s: String) = Action {
 
-    var expr = s.substring(0,s.indexOf("$$$"))
-    val pos = s.substring(s.indexOf("$$$")+3).toInt
+    val decoded = java.net.URLDecoder.decode(s, "UTF-8")
+
+    val expr = decoded.substring(0,decoded.indexOf("$$$"))
+    val pos = decoded.substring(decoded.indexOf("$$$")+3).toInt
+
+    println(expr+"&"+pos)
 
     val p = Position(1, pos)
-    expr = java.net.URLDecoder.decode(expr, "UTF-8")
+
     val ass = Assistant.create(expr.toSeq)
     Ok(Json.toJson(InputAssistanceReport(expr, Assistant.completions(ass, p).map(_.toString), Assistant.errors(ass).map(_.toString))))
   }
