@@ -40,7 +40,6 @@ function cliKeyUp(elem, key) { // fuer div
 
 		    var oldCurserPos = getCurser();
 
-
 			elText = encodeURIComponent(elText);
 		    elText = elText.replace(/%EF%BB%BF/gm, "")
 		    elText = elText.replace(/%C2%A0/gm, "")
@@ -70,7 +69,10 @@ function cliKeyUp(elem, key) { // fuer div
 							});
 
 							$.each(report.errors, function(i, c) { 
-								$('#errors').append((c+"<br />"));
+								if(i % 2 == 0)
+		          					$("#errors").append("<li>" + c + "</li>")
+		          				else
+		          					$("#errors").append("&nbsp;&nbsp;&nbsp;"+c)
 							});
 
 							$('#highlighted').html(report.colored);

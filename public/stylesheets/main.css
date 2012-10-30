@@ -8,6 +8,7 @@ background: url(../images/wallpaper.jpeg) repeat;
 }
 
 h1 { font-size: 50px; font-weight: bolder }
+
 #cli {
 	border: 2px dashed black;
 	width: 425px;
@@ -19,7 +20,7 @@ h1 { font-size: 50px; font-weight: bolder }
 
 }
 
-#highlighted, #errors, #results {
+#highlighted, #results {
 	border: 1px solid black;
 	width: 300px;
 	text-align: left;
