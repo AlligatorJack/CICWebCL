@@ -2,7 +2,7 @@ package controllers
 
 import play.api._
 import play.api.mvc._
-import cmd.parsing.partial.PartialCmdNoRecoveryParser
+import beaver.PartialCmdNoRecoveryParser
 import cmd.parsing.partial.PartialCmdLexer
 import java.io.StringReader
 import cmd.ast.{partial => AST}
@@ -19,10 +19,11 @@ import cmd.assistance.Assistant
 import cmd.parsing.partial.DefaultParser
 import cmddef.Command
 import util.Position
+import cmds.CommandsSeq
 
 object Application extends Controller {
 
-  val cmds: Seq[Command] = Seq()
+  val cmds: Seq[Command] = CommandsSeq.cmds
 
   val Assistant: Assistant = new DefaultAssistant(cmds, DefaultParser)
   
@@ -37,8 +38,7 @@ object Application extends Controller {
   def request(expr: String) = Action {
     val p = Position(0, 0)
     val ass = Assistant.create(expr.toSeq)
-    // Ok(Json.toJson(InputAssistanceReport(colorizeStringNotAction(expr), Assistant.completions(ass, p), Assistant.errors(ass))))
-    Ok(Json.toJson(InputAssistanceReport(colorizeString(expr), Seq("1", "2"), Seq("1", "2"))))
+    Ok(Json.toJson(InputAssistanceReport(expr, Assistant.completions(ass, p).map(_.toString), Assistant.errors(ass).map(_.toString))))
   }
   
   def colorizeString(s: String) = {
