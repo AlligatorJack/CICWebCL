@@ -7,24 +7,30 @@ font-family: Optima;
 background: url(../images/wallpaper.jpeg) repeat;  
 }
 
-h1 { font-size: 50px; font-weight: bolder }
+h1 { font-size: 50px;  }
 
 #cli {
 	border: 2px dashed black;
 	width: 425px;
+	min-width: 425px;
 	text-align: left;
 	height: 25px;
+	min-height: 25px;
 	font-size: 18px;
 	padding-left:10px;
 	padding-right:10px;
+	page-break-inside: avoid;
+	page-break-before:always;
+	list-style:none;
+	display: inline-block;
 
 }
 
-#highlighted, #results {
-	border: 1px solid black;
+#highlighted, #result {
+	/*border: 1px solid black;*/
 	width: 300px;
 	text-align: left;
-	height: 20px;
+	/*height: 20px;*/
 	padding-left:10px;
 	padding-right:10px;
 	padding-top: 2px;
@@ -37,12 +43,20 @@ h1 { font-size: 50px; font-weight: bolder }
 
 
 #completions {
-	width: 150px;
+	width: 300px;
 	height: 200px;
 	background: url(../images/wallpaper.jpeg) repeat;  
 	padding:5px;
 }
 
+#table {
+	border-spacing: 20px;
+
+}
+
+tr td{
+	font-weight: bold;
+}
 
 .wrapper { position: relative; x-p }
 .top    { position: absolute; width: 300px; height: 18px; left: 70%; top: 50%; z-index: 99; }

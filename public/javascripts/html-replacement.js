@@ -32,7 +32,6 @@ function cliKeyUp(elem) { // worx!!! fuer input
 };
 */
 
-
 function cliKeyUp(elem, key) { // fuer div
 
 		    var elText = document.getElementById("cli").textContent;
@@ -41,26 +40,35 @@ function cliKeyUp(elem, key) { // fuer div
 		    var oldCurserPos = getCurser();
 
 			elText = encodeURIComponent(elText);
-		    elText = elText.replace(/%EF%BB%BF/gm, "")
-		    elText = elText.replace(/%C2%A0/gm, "")
+		    elText = elText.replace(/%EF%BB%BF/gm, "");
+		    elText = elText.replace(/%C2%A0/gm, "");
 
 		    
 			if (elText.length == 0) {
-				$('#cli').text("");
+				$('#cli').value = "";
 				$('#highlighted').text("");
 				$('#errors').text("");
 				document.getElementById("completions").options.length = 0;
 
 			}
 			else {
-				if(keyCode != 13) {
+				if((keyCode == 38) || (keyCode == 40)) {
+					posInCLI = getCurser();
+					document.getElementById("completions").focus();
+				}
 
+				else if(keyCode == 13) {
+					jsRoutes.controllers.Application.execute(elText).ajax({
+						success : function(result) {
+							$('#result').text(result);
+						}
+					});
 
+				}
+				else {
 					jsRoutes.controllers.Application.request(elText+"$$$"+getCurser()).ajax({
 						success : function(report) {
 
-							console.log(report);
-							
 							document.getElementById("completions").options.length = 0;
 							$('#errors').text("");
 
@@ -78,30 +86,14 @@ function cliKeyUp(elem, key) { // fuer div
 							$('#highlighted').html(report.colored);
 						}
 					});
-
-
 				}
-				else {
-					jsRoutes.controllers.Application.apply(elText).ajax({
-						success : function(report) {
-							
-							
-							// $.each(report.errors, function(i, c) { 
-			    //     			$('#errors').html($('#errors').text + c);
-							// });
-
-							// $('#result').html(report.result);
-												}
-					});
 			}
-		}
-
 };
 
 
-function setCurser(pos) {		// works for div!!
+function setCurser(id, pos) {		// works for div!!
 
-		var content = document.getElementById('cli');
+		var content = document.getElementById(id);
     	content.focus();
   		var sel = window.getSelection();
   		sel.collapse(content.firstChild, pos);

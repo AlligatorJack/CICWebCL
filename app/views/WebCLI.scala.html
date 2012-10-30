@@ -22,10 +22,33 @@
 	<!-- Caret Position 
 	<script type="text/javascript" src="@routes.Assets.at("javascripts/cursor.js")"></script>-->
 	<!-- HTML-Replacement -->
+	<script type="text/javascript">
+	var posInCLI = 0;
+	</script>
 	<script type="text/javascript" src="@routes.Assets.at("javascripts/html-replacement.js")"></script>
 
 	<!-- javaScriptRoutes -->
 	<script type="text/javascript" src='@routes.Application.javascriptRoutes()'>
+	</script>
+
+	<script type="text/javascript">
+
+		function applyCompl(key) {
+			var select = document.getElementById("completions");
+			var keyCode = key?key.which:event.key.keyCode;
+			if (keyCode == 13) {
+				var index = select.options[select.selectedIndex].text.indexOf("]");
+				if(index != -1){
+					var cliText = $('#cli').text()
+					cliText = cliText.replace(/\s/g,'');
+					cliText = cliText + select.options[select.selectedIndex].text.substring(index+3);
+					$('#cli').text(cliText);
+
+				}
+			}
+			setCurser("cli", $('#cli').text().length);
+		}
+
 	</script>
 
 
@@ -39,9 +62,12 @@
 	<br /> <br /> 
 	<span style="font-size: 20px; font-weight: bold;">Go knock yourself out...</span>  <br /> <br /> 
 
-	<div for="tags" id="cli" contenteditable="true" onkeyup="cliKeyUp($('#cli'), event);">
-
+	<!-- <div id="cli" contenteditable="true" onkeyup="cliKeyUp($('#cli'), event);"> -->
+	
+	<div contenteditable="true"  id="cli" onkeyup="cliKeyUp($('#cli'), event);">
 	</div>
+
+
 	<br />
 	<br />
 	<br />
@@ -51,8 +77,8 @@
 			<td><div id="highlighted"></div></td>
 		</tr>
 		<tr>
-			<td style="padding-right:35px">Results</td>
-			<td><div id="results"></div></td>
+			<td style="padding-right:35px">Result</td>
+			<td><div id="result"></div></td>
 		</tr>
 		<tr>
 			<td style="padding-right:35px">Errors</td>
@@ -60,9 +86,9 @@
 		</tr>
 	</table>
 
-	<br /> 	<br />	<br />
+	<br /> 	<br />
 
-	<select width="60" name="completions" id="completions" multiple="multiple"></select>
+	<select width="60" name="completions" id="completions" multiple="multiple" onkeydown="applyCompl(event)"></select>
 	<br /> 	<br />
 
 </center>
