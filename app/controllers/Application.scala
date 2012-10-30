@@ -6,6 +6,7 @@ import beaver.PartialCmdNoRecoveryParser
 import cmd.parsing.partial.PartialCmdLexer
 import java.io.StringReader
 import cmd.ast.{partial => AST}
+import cmd.ast.{full => FAST}
 import util.Symbol
 import play.api.templates.Html
 import scala.xml._
@@ -19,6 +20,12 @@ import cmd.parsing.partial.DefaultParser
 import cmddef.Command
 import util.Position
 import cmds.CommandsSeq
+import scala.collection.immutable.Seq
+import cmd.parsing.full.CmdLexer
+import cmd.parsing.full.CmdParser
+import cmd.interpreter.InterpreterException
+import interpreter.GInterpreter
+import java.io.StringReader
 
 object Application extends Controller {
 
@@ -41,8 +48,15 @@ object Application extends Controller {
 
     val p = Position(1, pos)
 
-    val ass = Assistant.create(expr.toSeq)
-    Ok(Json.toJson(InputAssistanceReport(colorizeString(expr), Assistant.completions(ass, p).map(_.toString), Assistant.errors(ass).map(_.toString))))
+    val ass = Assistant.create(Seq() ++ expr.toSeq)
+    //val comps = Assistant.completions(ass, p).map(_.toString)
+
+    //println(comps)
+
+    // Ok(Json.toJson(InputAssistanceReport(colorizeString(expr), Assistant.completions(ass, p).map(_.toString), Assistant.errors(ass).map(_.toString))))
+    Ok(Json.toJson(InputAssistanceReport(colorizeString(expr), Assistant.completions(ass, p).map(_.toString), Seq("fehler", "fehler1"))))
+
+    //Ok(Json.toJson(InputAssistanceReport(colorizeString(expr), Seq("1", "2"), Assistant.errors(ass).map(_.toString))))
   }
   
   def colorizeString(s: String) = {
@@ -168,5 +182,14 @@ object Application extends Controller {
   def getCompletions(str: String) : Seq[String] = {
 
     Seq("add", "analyze", "apply", "cancel", "copy", "cut", "maximize", "make", "minimize", "move", "paste", "save", "send")
+  }
+
+  def execute(expr: String) = Action {
+    try
+      Ok(GInterpreter.eval(new CmdParser().parse(new CmdLexer(new StringReader(expr))).asInstanceOf[FAST.Expr], cmds, Seq()).toString)
+    catch {
+      case e: beaver.Parser.Exception => Ok(e.getMessage)
+      case e: InterpreterException    => Ok(e.getMessage)
+    }
   }
 }

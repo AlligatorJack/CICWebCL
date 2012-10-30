@@ -1,4 +1,5 @@
-package cmds
+package interpreter
+import cmds._
 import collection.immutable.IndexedSeq
 import cmddef.Command
 import cmd.interpreter.{value => VAL}
