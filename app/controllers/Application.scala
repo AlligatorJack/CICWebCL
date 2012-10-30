@@ -53,8 +53,8 @@ object Application extends Controller {
 
     //println(comps)
 
-    // Ok(Json.toJson(InputAssistanceReport(colorizeString(expr), Assistant.completions(ass, p).map(_.toString), Assistant.errors(ass).map(_.toString))))
-    Ok(Json.toJson(InputAssistanceReport(colorizeString(expr), Assistant.completions(ass, p).map(_.toString), Seq("fehler", "fehler1"))))
+    Ok(Json.toJson(InputAssistanceReport(colorizeString(expr), Assistant.completions(ass, p).map(_.toString), Assistant.errors(ass).map(_.toString))))
+    //Ok(Json.toJson(InputAssistanceReport(colorizeString(expr), Assistant.completions(ass, p).map(_.toString), Seq("fehler", "fehler1"))))
 
     //Ok(Json.toJson(InputAssistanceReport(colorizeString(expr), Seq("1", "2"), Assistant.errors(ass).map(_.toString))))
   }
