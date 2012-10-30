@@ -6,6 +6,7 @@ import beaver.PartialCmdNoRecoveryParser
 import cmd.parsing.partial.PartialCmdLexer
 import java.io.StringReader
 import cmd.ast.{partial => AST}
+import cmd.ast.{full => FAST}
 import util.Symbol
 import play.api.templates.Html
 import scala.xml._
@@ -20,6 +21,11 @@ import cmddef.Command
 import util.Position
 import cmds.CommandsSeq
 import scala.collection.immutable.Seq
+import cmd.parsing.full.CmdLexer
+import cmd.parsing.full.CmdParser
+import cmd.interpreter.InterpreterException
+import interpreter.GInterpreter
+import java.io.StringReader
 
 object Application extends Controller {
 
@@ -178,4 +184,12 @@ object Application extends Controller {
 
     Seq("add", "analyze", "apply", "cancel", "copy", "cut", "maximize", "make", "minimize", "move", "paste", "save", "send")
   }
+
+  def execute(expr: String) =
+    try
+      Ok(GInterpreter.eval(new CmdParser().parse(new CmdLexer(new StringReader(expr))).asInstanceOf[FAST.Expr], cmds, Seq()).toString)
+    catch {
+      case e: beaver.Parser.Exception => Ok(e.getMessage)
+      case e: InterpreterException    => Ok(e.getMessage)
+    }
 }
