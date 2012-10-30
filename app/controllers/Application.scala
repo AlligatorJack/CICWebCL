@@ -46,7 +46,7 @@ object Application extends Controller {
     val p = Position(1, pos)
 
     val ass = Assistant.create(expr.toSeq)
-    Ok(Json.toJson(InputAssistanceReport(expr, Assistant.completions(ass, p).map(_.toString), Assistant.errors(ass).map(_.toString))))
+    Ok(Json.toJson(InputAssistanceReport(colorizeString(expr), Assistant.completions(ass, p).map(_.toString), Assistant.errors(ass).map(_.toString))))
   }
   
   def colorizeString(s: String) = {

@@ -21,6 +21,7 @@
 		        			$("#completions").append(c)
 						
 							$("#highlighted").html(report.colored);
+							console.log("coloredresult:" + report.colored);
 						});
 
 
