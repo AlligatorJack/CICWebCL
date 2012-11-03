@@ -11,11 +11,11 @@ object Move extends Command {
   val returnType = "String"
   val params: List[Param] = List(new ParamTyped[String]("src", "hilfe fuer p1", { (comp: Option[String]) =>
      
-	List("C:\\Programme", "C:\\Projects", "C:\\Pizdec").filter(p => p.startsWith(comp.getOrElse("")))
+	List("C:\\Programme", "C:\\Projects", "C:\\Pride").filter(p => p.startsWith(comp.getOrElse("")))
 
   }, Type.String, None), new ParamTyped[String]("dest", "hilfe fuer p2", { (comp: Option[String]) =>
      
-	List("D:\\Sport", "D:\\Scala", "D:\\Suki").filter(p => p.startsWith(comp.getOrElse("")))
+	List("D:\\Sport", "D:\\Scala", "D:\\Soul").filter(p => p.startsWith(comp.getOrElse("")))
 
   }, Type.String, None))
   def apply(src: String, dest: String): String = {
