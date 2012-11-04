@@ -31,10 +31,13 @@ function cliKeyUp(elem) { // worx!!! fuer input
 			}
 };
 */
-
+/*
+* @author Florian
+*/
 function cliKeyUp(elem, key) { // fuer div
 
-		    var elText = document.getElementById("cli").textContent;
+		    // var elText = document.getElementById("cli").textContent;
+		    var elText = document.getElementById("cli").value;
 		    var keyCode = key?key.which:event.key.keyCode;
 
 		    var oldCurserPos = getCurser();
